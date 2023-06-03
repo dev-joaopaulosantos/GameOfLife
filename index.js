@@ -21,12 +21,11 @@ class GameOfLife {
             let row = [];
             this.cells.push(row);
             for (let x = 0; x < this.boardSize.width; x++) {
-                let cell = {
-                    alive: randomInt(0, 2),
-                    x: x * this.cellSize.width,
-                    y: y * this.cellSize.height,
-                    nextState: 0
-                };
+                let cell = new Cell(
+                    false,
+                    x * this.cellSize.width,
+                    y * this.cellSize.height
+                );
                 row.push(cell);
             }
         }
@@ -107,10 +106,14 @@ class GameOfLife {
     }
 }
 
-function randomInt(min, max) {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min) + min)
+class Cell {
+    constructor(alive, x, y) {
+        this.alive = alive;
+        this.x = x;
+        this.y = y;
+        this.nextState = 0;
+        this.neighbors = [];
+    }
 }
 
 let game = new GameOfLife(20, 20);
@@ -118,25 +121,38 @@ game.render()
 let intervalId = null;
 
 document.getElementById("start").addEventListener("click", () => {
-  // Verifica se o jogo já está em execução
-  if (intervalId === null) {
-    // Inicia o jogo apenas se não estiver em execução
-    intervalId = setInterval(() => {
-      game.execute();
-    }, 200);
-  }
+    if (intervalId === null) {
+        intervalId = setInterval(() => {
+            game.execute();
+        }, 200);
+    }
 });
 
 document.getElementById("stop").addEventListener("click", () => {
-  // Para o jogo
-  clearInterval(intervalId);
-  intervalId = null;
+    clearInterval(intervalId);
+    intervalId = null;
 });
 
-document.getElementById("reset").addEventListener("click", () => {
-  // Reinicia o jogo
-  clearInterval(intervalId);
-  intervalId = null;
-  game = new GameOfLife(20, 20);
-});
+const canvasElement = document.getElementById("canvas");
 
+canvasElement.addEventListener("click", handleClick);
+
+function handleClick(event) {
+    const rect = canvasElement.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+    const cellX = Math.floor(clickX / game.cellSize.width);
+    const cellY = Math.floor(clickY / game.cellSize.height);
+    const cell = game.cells[cellY][cellX];
+    cell.alive = !cell.alive;
+    game.renderCell(cell);
+}
+
+document.getElementById("clear").addEventListener("click", () => {
+    game.cells.forEach(row => {
+        row.forEach(cell => {
+            cell.alive = false;
+            game.renderCell(cell);
+        });
+    });
+});

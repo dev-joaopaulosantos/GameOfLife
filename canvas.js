@@ -6,12 +6,10 @@ class Canvas{
         this.height = this.ctx.canvas.clientHeight
     }
 
-    rectangle(x, y, larg, alt, corBorda, corInterna){
-        this.ctx.fillStyle = corInterna
-        this.ctx.strokeStyle = corBorda
-        if(corInterna) this.ctx.fillRect(x, y, larg, alt)
-        if(corBorda) this.ctx.strokeRect(x, y, larg, alt)
+    rectangle(x, y, width, height, borderColor, innerColor){
+        this.ctx.fillStyle = innerColor
+        this.ctx.strokeStyle = borderColor
+        if(innerColor) this.ctx.fillRect(x, y, width, height)
+        if(borderColor) this.ctx.strokeRect(x, y, width, height)
     }
 }
-
-// ctx.fillRect(50,100,100,100)
