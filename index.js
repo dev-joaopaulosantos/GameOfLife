@@ -1,87 +1,109 @@
 class GameOfLife {
     constructor(width, height) {
-        this.canvas = new Canvas()
-        this.BoardSize = {
+        this.canvas = new Canvas();
+        this.boardSize = {
             width: width,
             height: height
-        }
+        };
 
-        this.CellSize = {
+        this.cellSize = {
             width: this.canvas.width / width,
             height: this.canvas.height / height
-        }
+        };
 
-        this.Cells = []
-        this.startCells()
-        this.startNears()
+        this.cells = [];
+        this.initializeCells();
+        this.initializeNeighbors();
     }
-    startCells() {
-        for (let y = 0; y < this.BoardSize.height; y++) {
-            let line = []
-            this.Cells.push(line)
-            for (let x = 0; x < this.BoardSize.width; x++) {
+
+    initializeCells() {
+        for (let y = 0; y < this.boardSize.height; y++) {
+            let row = [];
+            this.cells.push(row);
+            for (let x = 0; x < this.boardSize.width; x++) {
                 let cell = {
                     alive: randomInt(0, 2),
-                    x: x * this.CellSize.width,
-                    y: y * this.CellSize.height,
-                    next: 0
-                }
-                line.push(cell)
+                    x: x * this.cellSize.width,
+                    y: y * this.cellSize.height,
+                    nextState: 0
+                };
+                row.push(cell);
             }
         }
     }
-    startNears() {
-        this.Cells.forEach((line, y) => {
-            line.forEach((cell, x) => {
-                cell.nears = []
+
+    initializeNeighbors() {
+        this.cells.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                cell.neighbors = [];
                 for (let dy = -1; dy <= 1; dy++) {
                     for (let dx = -1; dx <= 1; dx++) {
                         if (dx !== 0 || dy !== 0) {
-                            let nearX = x + dx
-                            let nearY = y + dy
-                            if (nearX >= 0 && nearX < this.BoardSize.width && nearY >= 0 && nearY < this.BoardSize.height) {
-                                let nearCell = this.Cells[nearY][nearX]
-                                cell.nears.push(nearCell)
+                            let neighborX = x + dx;
+                            let neighborY = y + dy;
+                            if (
+                                neighborX >= 0 &&
+                                neighborX < this.boardSize.width &&
+                                neighborY >= 0 &&
+                                neighborY < this.boardSize.height
+                            ) {
+                                let neighborCell = this.cells[neighborY][neighborX];
+                                cell.neighbors.push(neighborCell);
                             }
                         }
                     }
                 }
-            })
-        })
+            });
+        });
     }
-    calculate() {
-        this.Cells.forEach(line => {
-            line.forEach(cell => {
-                let nears = 0
-                cell.nears.forEach(nearCell => {
-                    nears += nearCell.alive
-                })
-                if (cell.alive) cell.next = +(nears >= 2 && nears <= 3)
-                else cell.next = +(nears == 3)
-            })
-        })
+
+    calculateNextState() {
+        this.cells.forEach(row => {
+            row.forEach(cell => {
+                let aliveNeighbors = cell.neighbors.reduce(
+                    (total, neighborCell) => total + neighborCell.alive,
+                    0
+                );
+                if (cell.alive) {
+                    cell.nextState = +(aliveNeighbors >= 2 && aliveNeighbors <= 3);
+                } else {
+                    cell.nextState = +(aliveNeighbors === 3);
+                }
+            });
+        });
     }
-    update() {
-        this.Cells.forEach(line => {
-            line.forEach(cell => {
-                cell.alive = cell.next
-            })
-        })
+
+    updateState() {
+        this.cells.forEach(row => {
+            row.forEach(cell => {
+                cell.alive = cell.nextState;
+            });
+        });
     }
+
     render() {
-        this.Cells.forEach(line => {
-            line.forEach(cell => {
-                this.renderCell(cell)
-            })
-        })
+        this.cells.forEach(row => {
+            row.forEach(cell => {
+                this.renderCell(cell);
+            });
+        });
     }
+
     renderCell(cell) {
-        this.canvas.rectangle(cell.x, cell.y, this.CellSize.width, this.CellSize.height, "black", cell.alive ? "green" : "white")
+        this.canvas.rectangle(
+            cell.x,
+            cell.y,
+            this.cellSize.width,
+            this.cellSize.height,
+            "black",
+            cell.alive ? "green" : "white"
+        );
     }
+
     execute() {
-        this.calculate()
-        this.update()
-        this.render()
+        this.calculateNextState();
+        this.updateState();
+        this.render();
     }
 }
 
@@ -91,11 +113,30 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min)
 }
 
-let game = new GameOfLife(20, 20)
+let game = new GameOfLife(20, 20);
+game.render()
+let intervalId = null;
 
-function executeGame() {
-    game.execute()
-    // requestAnimationFrame(executeGame)
+document.getElementById("start").addEventListener("click", () => {
+  // Verifica se o jogo já está em execução
+  if (intervalId === null) {
+    // Inicia o jogo apenas se não estiver em execução
+    intervalId = setInterval(() => {
+      game.execute();
+    }, 200);
+  }
+});
 
-}
-requestAnimationFrame(executeGame)
+document.getElementById("stop").addEventListener("click", () => {
+  // Para o jogo
+  clearInterval(intervalId);
+  intervalId = null;
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  // Reinicia o jogo
+  clearInterval(intervalId);
+  intervalId = null;
+  game = new GameOfLife(20, 20);
+});
+
