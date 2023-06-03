@@ -4,22 +4,32 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <script src="canvas.js" defer></script>
     <script src="index.js" defer></script>
+    <!-- Import Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>Document</title>
   </head>
   <body>
-    <canvas
-      id="canvas"
-      width="400"
-      height="400"
-      style="border: 1px solid black"
-    ></canvas>
+    <header>
+      <h1>Game of Life</h1>
+      <p>by Joao Paulo Santos</p>
+    </header>
+    <div id="container">
+      <canvas id="canvas" width="370" height="370"></canvas>
 
-    <div>
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
-        <button id="clear">Clear</button>
+      <div id="actions">
+        <button id="start"><i class="fa-solid fa-play"></i>Start</button>
+        <button id="stop"><i class="fa-solid fa-pause"></i>Stop</button>
+        <button id="clear"><i class="fa-solid fa-xmark"></i>Clear</button>
+      </div>
     </div>
   </body>
 </html>

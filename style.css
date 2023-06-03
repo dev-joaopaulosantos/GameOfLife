@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Sigmar&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: #404040;
+    font-family: Helvetica;
+}
+header{
+    background-color: #3663a8;
+    padding: 1rem 0 1rem .5rem;
+    margin-bottom: .5rem;
+    color: #aacbff;
+}
+header h1{
+    font-size: 2.5rem;
+    font-family: Sigmar;
+}
+canvas{
+    border: 1px solid black;
+}
+#container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#actions{
+    width: 370px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: .5rem;
+}
+#start, #stop, #clear{
+    width: 30%;
+    height: 2rem;
+    cursor: pointer;
+    background-color: #3663a8;
+    color: #fff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .3rem;
+    font-size: 1rem;
+}

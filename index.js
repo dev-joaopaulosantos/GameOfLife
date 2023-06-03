@@ -94,8 +94,8 @@ class GameOfLife {
             cell.y,
             this.cellSize.width,
             this.cellSize.height,
-            "black",
-            cell.alive ? "green" : "white"
+            "#FFF",
+            cell.alive ? "#ffff00" : "#7e7e7e"
         );
     }
 
@@ -116,7 +116,7 @@ class Cell {
     }
 }
 
-let game = new GameOfLife(20, 20);
+let game = new GameOfLife(15, 15);
 game.render()
 let intervalId = null;
 
@@ -155,4 +155,6 @@ document.getElementById("clear").addEventListener("click", () => {
             game.renderCell(cell);
         });
     });
+    clearInterval(intervalId);
+    intervalId = null;
 });
