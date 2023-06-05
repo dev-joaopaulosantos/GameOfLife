@@ -146,7 +146,7 @@ function handleClick(event) {
     const clickY = event.clientY - rect.top
     const cellX = Math.floor(clickX / game.cellSize.width)
     const cellY = Math.floor(clickY / game.cellSize.height);
-    const cell = game.cells[cellY][cellX]; 
+    const cell = game.cells[cellY][cellX];
     cell.alive = !cell.alive; // inverte o estado da celula
     game.renderCell(cell); // renderiza a celula com o novo estado
 }
