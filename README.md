@@ -15,4 +15,7 @@
 
 3. Para matar todas as células você pode clicar no botão __Clear__.
 
-Obs: _Caso você precione o botão **start** com o painel sem nehuma célula viva, e tente clicar em alguma célula, ela vai morrer instantaneamente_
+Obs: _Caso você precione o botão **start** com o painel sem nehuma célula viva, e tente clicar em alguma célula, ela vai morrer instantaneamente_.
+
+#### Código Fonte:
+   Link: <https://github.com/dev-joaopaulosantos/GameOfLife>
